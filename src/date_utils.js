@@ -525,6 +525,30 @@ export function monthDisabledAfter(day, { maxDate, includeDates } = {}) {
   );
 }
 
+export function yearDisabledBefore(day, { minDate, includeDates } = {}) {
+  const previousYear = subYears(day, 1);
+  return (
+    (minDate && differenceInCalendarYears(minDate, previousYear) > 0) ||
+    (includeDates &&
+      includeDates.every(
+        includeDate => differenceInCalendarYears(includeDate, previousMonth) > 0
+      )) ||
+    false
+  );
+}
+
+export function yearDisabledAfter(day, { maxDate, includeDates } = {}) {
+  const nextYear = addYears(day, 1);
+  return (
+    (maxDate && differenceInCalendarYears(nextYear, maxDate) > 0) ||
+    (includeDates &&
+      includeDates.every(
+        includeDate => differenceInCalendarYears(nextYear, includeDate) > 0
+      )) ||
+    false
+  );
+}
+
 export function getEffectiveMinDate({ minDate, includeDates }) {
   if (includeDates && minDate) {
     let minDates = includeDates.filter(
